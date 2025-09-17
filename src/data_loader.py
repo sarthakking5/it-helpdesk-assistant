@@ -6,8 +6,15 @@ def load_old_tickets():
     try:
         standard_columns = ['ticket_id', 'problem_description', 'solution_description', 'category', 'resolved']
 
+        def normalize_resolved(col):
+            return col.apply(
+                lambda x: True if str(x).lower() == 'true'
+                else False if str(x).lower() == 'false'
+                else False
+            )
+
         # Load Excel file
-        excel_df = pd.read_excel("data/ticket_dump.xlsx")
+        excel_df = pd.read_excel("data/ticket_dump_2.xlsx")
         excel_df = excel_df.rename(columns={
             "Ticket ID": 'ticket_id',
             "Resolution": 'solution_description',
@@ -23,7 +30,7 @@ def load_old_tickets():
             else '', axis=1
         )
 
-        excel_df['resolved'] = excel_df['resolved'].str.lower().map({'true': True, 'false': False}).fillna(False)
+        excel_df['resolved'] = normalize_resolved(excel_df['resolved'])
         excel_df = excel_df[standard_columns].fillna({'problem_description': '', 'solution_description': ''})
 
         # Load CSV file
@@ -43,7 +50,7 @@ def load_old_tickets():
             else '', axis=1
         )
 
-        csv_df['resolved'] = csv_df['resolved'].str.lower().map({'true': True, 'false': False}).fillna(False)
+        csv_df['resolved'] = normalize_resolved(csv_df['resolved'])
         csv_df = csv_df[standard_columns].fillna({'problem_description': '', 'solution_description': ''})
 
         # Load JSON file
@@ -65,7 +72,7 @@ def load_old_tickets():
             else '', axis=1
         )
 
-        json_df['resolved'] = json_df['resolved'].str.lower().map({'true': True, 'false': False}).fillna(False)
+        json_df['resolved'] = normalize_resolved(json_df['resolved'])
         json_df = json_df[standard_columns].fillna({'problem_description': '', 'solution_description': ''})
 
         # Combine all dataframes
@@ -80,6 +87,7 @@ def load_old_tickets():
     except Exception as e:
         st.error(f"Error loading old tickets: {e}")
         return pd.DataFrame(columns=standard_columns)
+
 
 
 def load_new_tickets():
