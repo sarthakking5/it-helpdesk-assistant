@@ -3,10 +3,16 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import streamlit as st
 import pandas as pd
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 
 @st.cache_resource
 def load_embedding_model():
-    return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+    embedding_model=os.getenv('EMBEDDING_MODEL')
+    return SentenceTransformer(embedding_model)
 
 @st.cache_data
 def compute_embeddings(ticket_texts):

@@ -16,6 +16,7 @@ def load_hf_client():
 
 def generate_suggestion(similar_tickets, new_problem,new_category=''):
     client = load_hf_client()
+    model_name=os.getenv("GENERATOR_MODEL")
     if client is None:
         return "Unable to generate suggestion: missing HF_API_TOKEN."
 
@@ -33,7 +34,7 @@ def generate_suggestion(similar_tickets, new_problem,new_category=''):
 
     try:
         response = client.chat.completions.create(
-            model="meta-llama/Llama-3.1-8B-Instruct",
+            model=model_name,
             messages=[{"role": "user", "content": prompt}],
             max_tokens=150
         )
