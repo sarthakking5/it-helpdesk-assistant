@@ -22,16 +22,13 @@ def load_old_tickets():
             'Resolved': 'resolved'
         })
 
-        excel_df['problem_description'] = excel_df.apply(
-            lambda row: f"Issue: {row['Issue']}. Description: {row['Description']}" 
-            if pd.notna(row['Issue']) and pd.notna(row['Description'])
-            else row['Description'] if pd.notna(row['Description'])
-            else row['Issue'] if pd.notna(row['Issue'])
-            else '', axis=1
-        )
-
-        excel_df['resolved'] = normalize_resolved(excel_df['resolved'])
-        excel_df = excel_df[standard_columns].fillna({'problem_description': '', 'solution_description': ''})
+        excel_df['problem_description'] = excel_df['Description'].fillna('')
+        if 'resolved' in excel_df.columns:
+            excel_df['resolved'] = normalize_resolved(excel_df['resolved'])
+        else:
+            excel_df['resolved']=False
+            st.warning("Excel file missing resolved column defailting to False")
+        excel_df = excel_df[standard_columns].fillna({'problem_description': '', 'solution_description': '','category':''})
 
         # Load CSV file
         csv_df = pd.read_csv("data/ticket_dump_1.csv")
@@ -41,17 +38,14 @@ def load_old_tickets():
             'Category': 'category',
             'Resolved': 'resolved'
         })
-
-        csv_df['problem_description'] = csv_df.apply(
-            lambda row: f"Issue: {row['Issue']}. Description: {row['Description']}" 
-            if pd.notna(row['Issue']) and pd.notna(row['Description'])
-            else row['Description'] if pd.notna(row['Description'])
-            else row['Issue'] if pd.notna(row['Issue'])
-            else '', axis=1
-        )
-
-        csv_df['resolved'] = normalize_resolved(csv_df['resolved'])
-        csv_df = csv_df[standard_columns].fillna({'problem_description': '', 'solution_description': ''})
+        csv_df['problem_description']=csv_df['Description'].fillna('')
+        if 'resolved' in csv_df.columns:
+            csv_df['resolved']=normalize_resolved(csv_df['resolved'])
+        else:
+            csv_df['resolved']=False
+            st.warning("CSV file missing resolved column defaulting to False")
+        csv_df=csv_df[standard_columns].fillna({'problem_description':'','solution_description':'','category':''})
+        
 
         # Load JSON file
         with open('data/ticket_dump_3.json', 'r') as f:
@@ -64,16 +58,14 @@ def load_old_tickets():
             'Resolved': 'resolved'
         })
 
-        json_df['problem_description'] = json_df.apply(
-            lambda row: f"Issue: {row['Issue']}. Description: {row['Description']}" 
-            if pd.notna(row['Issue']) and pd.notna(row['Description'])
-            else row['Description'] if pd.notna(row['Description'])
-            else row['Issue'] if pd.notna(row['Issue'])
-            else '', axis=1
-        )
+        json_df['problem_description']=json_df['Description'].fillna('')
+        if 'resolved' in json_df.columns:
+            json_df['resolved']=normalize_resolved(json_df['resolved'])
+        else:
+            json_df['resolved']=False
+            st.warning("JSON file missing resolved column, defaulting to False")
+        json_df=json_df[standard_columns].fillna({'problem_description':'','solution_description':'','category':''})
 
-        json_df['resolved'] = normalize_resolved(json_df['resolved'])
-        json_df = json_df[standard_columns].fillna({'problem_description': '', 'solution_description': ''})
 
         # Combine all dataframes
         combined_df = pd.concat([excel_df, csv_df, json_df], ignore_index=True)
@@ -98,14 +90,7 @@ def load_new_tickets():
             "Category": 'category'
         })
 
-        new_tickets['problem_description'] = new_tickets.apply(
-            lambda row: f"Issue: {row['Issue']}. Description: {row['Description']}" 
-            if pd.notna(row.get('Issue')) and pd.notna(row.get('Description'))
-            else row['Description'] if pd.notna(row.get('Description'))
-            else row['Issue'] if pd.notna(row.get('Issue'))
-            else '', axis=1
-        )
-
+        new_tickets['problem_description']=new_tickets['Description'].fillna('')
         columns = ['ticket_id', 'problem_description', 'category'] if 'category' in new_tickets.columns else ['ticket_id', 'problem_description']
         new_tickets = new_tickets[columns].fillna({'problem_description': '', 'category': ''})
 

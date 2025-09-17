@@ -14,19 +14,21 @@ def load_hf_client():
         return None
     return InferenceClient(token=api_token)
 
-def generate_suggestion(similar_tickets, new_problem):
+def generate_suggestion(similar_tickets, new_problem,new_category=''):
     client = load_hf_client()
     if client is None:
         return "Unable to generate suggestion: missing HF_API_TOKEN."
 
+    category_text=f"Category:{new_category}." if new_category else ''
+
     prompt = (
-        "You are an IT Helpdesk Assistant. Based on the following resolved tickets, "
-        f"provide a concise suggestion to help an agent solve a new ticket with this problem: '{new_problem}'\n\n"
-        "Resolved Tickets:\n" +
-        "\n".join(
-            f"Problem: {row['problem_description']}\nSolution: {row['solution_description']}"
-            for _, row in similar_tickets.iterrows()
-        )
+        "You are an IT Helpdesk Assistant. Based on the following resolved tickets,provide a concise suggestion (without any into text)"
+        "to help an agent solve a new ticket with this problem: '{}{}'\n\nResolved Tickets:\n{}"
+        .format(category_text,new_problem,"\n".join(
+            f"Category:{row['category'] or 'Unknown'}. Problem :{row['problem_description']}\nSolution:{row['solution_description']}"
+            for _, row in similar_tickets.iterrows() 
+        ))
+        
     )
 
     try:
