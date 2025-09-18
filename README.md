@@ -45,3 +45,24 @@ EMBEDDING_MODEL=all-MiniLM-L6-v2
 GENERATOR_MODEL=meta-llama/Llama-3.1-8B-Instruct
 HF_API_TOKEN=your_huggingface_api_token
 ```
+## Example Workflow
+1. Select a new or manually entererd ticket description.
+2. The system retrives similar past tickets based on embeddings.
+3. It prioritizes resolved tickets and falls back to unresolved ones if needed.
+4. A Hugging Face LLM generates a concise suggestion for resolution.
+5. The agent sees both pasth cases amd the AI-suggested solution.
+
+### Teck Stack
+- Language Models: Hugging Face Interface API
+- Embeddings: Sentence Transformers (`all-MiniLM-L6-v2`)
+- Similarity Search: Cosine Similarity (Scikit-learn)
+- Frontend: Streamlit
+- Environment Management: dotenv
+- Data Processing: Pandas
+
+### Future Improvements
+- Replace cosine similarity with vector databases (FAISS,Pinecone, Weaviate).
+- Add evaluation metrics (Precision@k, Recall@k) to assess retrieval quality.
+- Improve multi-lingual support for tickets.
+- Optimize LLM prompts for shorter latency and lower cost.
+- Deploy as a scalable API service instead of just a Streamlit app.
