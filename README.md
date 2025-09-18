@@ -11,6 +11,29 @@ A Retrieval-Augmented Feneration (RAG) prototype to assist IT heldesk agents by 
 ## Architecture
 ![it-helpdesk-assistant](images/architecture.png)
 
+## Assumptions and Considerations
+- Dataset Size:
+  - The provided dataset has ~ 30 historical tickets.
+  - Cosine similarity is sufficient for retrieval at this scale. For larger datasets vector databases (FAISS, Pinecone) would be required.
+- Ticket Quality:
+  - Historical tickets are assumed to have clear problem and solution descriptions.
+  - If past solutions are incomplete or vague, retrieval quality will drop.
+- Resolved vs Unresolved tickets:
+  - Resolved tickets are considered more relaiable for generating suggestions.
+  - Unresolved tickets are only used as a fallback with reduced confidence.
+- Language:
+  - All tickets are in English and the system does not handle multilingual inputs at this stage.
+- Similarity Threshold
+  - A cutoff (0.4) is applied to filter out irrelevant matches.
+  - Threshold chosen emprically from experimentation.
+- Embedding Model Choice:
+  - `all-MiniLM-L6-v2` selected for speed and lightweight nature.
+  - Works well for short description but may lose nuance for very long, complex tickets.
+- Latency and API Limits
+  - Hugging Face API may have rate limits and latency (~1-3s per call).
+  - For production a self-hosted model or caching mechanism would be preferred.
+
+
 ## Project Structure
 ``` bash
 IT-Ticket-RAG/
