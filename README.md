@@ -8,6 +8,9 @@ A Retrieval-Augmented Feneration (RAG) prototype to assist IT heldesk agents by 
 - Generation Model: Uses Hugging Face LLMs to generate a concise suggestion for solving new tickets.
 - Streamlit App: User-friendly interface for IT agents to explore similar tickets and AI-generated resolutions
 
+## Architecture
+![it-helpdesk-assistant](images/architecture.png)
+
 ## Project Structure
 ``` bash
 IT-Ticket-RAG/
