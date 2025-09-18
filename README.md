@@ -14,11 +14,34 @@ IT-Ticket-RAG/
 │── data/                     # Sample datasets (Excel, CSV, JSON, New Tickets)
 │── src/                      # Source code modules
 │   ├── data_loader.py        # Loads and preprocesses old & new tickets
-│   ├── embedding_model.py     # Embedding model + similarity search
-│   ├── generation_model.py    # Hugging Face LLM inference
+│   ├── embedding_model.py    # Embedding model + similarity search
+│   ├── generation_model.py   # Hugging Face LLM inference
 │   ├── app.py                # Main Streamlit app
 │── .env                      # Environment variables (not committed)
 │── requirements.txt          # Python dependencies
 │── README.md                 # Project documentation
 
+```
+## Setup Instructions
+### 1. Clone the Repository
+``` bash
+git clone https://github.com/yourusername/IT-Ticket-RAG.git
+cd IT-Ticket-RAG
+```
+### 2. Create a Virtual Environment
+```bash
+python -m venv venv
+source venv/bin/activate   # On Linux/Mac
+venv\Scripts\activate      # On Windows
+```
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+### 4. Set Environment Variables
+Create a .env file in the root folder
+```env
+EMBEDDING_MODEL=all-MiniLM-L6-v2
+GENERATOR_MODEL=meta-llama/Llama-3.1-8B-Instruct
+HF_API_TOKEN=your_huggingface_api_token
 ```
