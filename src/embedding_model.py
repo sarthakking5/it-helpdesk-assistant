@@ -31,14 +31,14 @@ def find_similar_tickets(new_embedding, old_embeddings, old_tickets, k=3):
         similarities = cosine_similarity([new_embedding], filtered_embeddings)[0]
         filtered_tickets = filtered_tickets.assign(similarity=similarities)
         filtered_tickets = filtered_tickets.sort_values(by='similarity', ascending=False)
-        top_k_tickets = filtered_tickets.head(k)
+        top_k_tickets = filtered_tickets[filtered_tickets['similarity']>=0.4].head(k)
 
     # Fallback to all tickets if fewer than k matches
     if len(top_k_tickets) < k:
         used_unresolved = True
         remaining_k = k - len(top_k_tickets)
-        fallback_tickets = old_tickets
-        fallback_embeddings = old_embeddings
+        fallback_tickets = old_tickets.copy()
+        fallback_embeddings = old_embeddings.copy()
 
         if not fallback_tickets.empty:
             similarities = cosine_similarity([new_embedding], fallback_embeddings)[0]
@@ -47,12 +47,15 @@ def find_similar_tickets(new_embedding, old_embeddings, old_tickets, k=3):
 
             fallback_tickets = fallback_tickets[~fallback_tickets['ticket_id'].isin(top_k_tickets['ticket_id'])]
             fallback_tickets = fallback_tickets.sort_values(by='similarity', ascending=False)
-            additional_tickets = fallback_tickets.head(remaining_k)
-            top_k_tickets = pd.concat([top_k_tickets, additional_tickets], ignore_index=True)
+            additional_tickets = fallback_tickets[fallback_tickets['similarity']>=0.4].head(remaining_k)
 
-    # ✅ Always return consistent types
+            if additional_tickets.empty and not fallback_tickets.empty:
+                additional_tickets=fallback_tickets.head(remaining_k)
+                low_confidence=True
+            top_k_tickets=pd.concat([top_k_tickets,additional_tickets],ignore_index=True)
+    # Always return consistent types
     if top_k_tickets.empty:
-        return pd.DataFrame(), np.array([]), used_unresolved
+        return pd.DataFrame(), np.array([]), used_unresolved,True
 
     return (
         top_k_tickets[['ticket_id', 'problem_description', 'solution_description', 'category', 'resolved']],
