@@ -9,4 +9,4 @@ A Retrieval-Augmented Feneration (RAG) prototype to assist IT heldesk agents by 
    - `generation_model.py`: Generates suggestions using Llama.
    - `app.py`: Streamlit app logic.
 - `requirements.txt`: Project dependencies
-- `.env`: Enviornment variables (e.g., `HF_API_TOKEN`,`EMBEDDING_MODEL`,'GENERATOR_MODEL`).
+- `.env`: Enviornment variables (e.g., `HF_API_TOKEN`,`EMBEDDING_MODEL`,`GENERATOR_MODEL`).
