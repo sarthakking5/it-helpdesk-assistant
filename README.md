@@ -1,5 +1,5 @@
 # IT Helpdesk Ticket Assistant
-A Retrieval-Augmented Feneration (RAG) prototype to assist IT heldesk agents by suggesting resolutions for new tickets based on previously resolved tickets.
+A Retrieval-Augmented Generation (RAG) prototype to assist IT heldesk agents by suggesting resolutions for new tickets based on previously resolved tickets.
 
 ## Features
 - Data Loader: Ingests tickets from Excel, CSV and Json, normalizes schema, and handles missing values.
