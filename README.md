@@ -1,12 +1,24 @@
 # IT Helpdesk Ticket Assistant
 A Retrieval-Augmented Feneration (RAG) prototype to assist IT heldesk agents by suggesting resolutions for new tickets based on previously resolved tickets.
 
+## Features
+- Data Loader: Ingests tickets from Excel, CSV and Json, normalizes schema, and handles missing values.
+- Embedding Model: Generates sentence embeddings usinh Sentence Transformers and computes similarity scores with cosine similarity.
+- Retrieval Logic: Finds top-k similar tickets (prefers resolved ones, falls back to unresolved if needed).
+- Generation Model: Uses Hugging Face LLMs to generate a concise suggestion for solving new tickets.
+- Streamlit App: User-friendly interface for IT agents to explore similar tickets and AI-generated resolutions
+
 ## Project Structure
-- `data/`: Contains ticket data files (`old_tickets.xlsx`,`old_tickets.csv`,`old_tickets.json`,`new_tickets.csv')
-- `src/`: Source Code
-   - `data_loader.py`: Loads and combines ticket data.
-   - `embedding_model.py`: Handles embedding generation and similarity search.
-   - `generation_model.py`: Generates suggestions using Llama.
-   - `app.py`: Streamlit app logic.
-- `requirements.txt`: Project dependencies
-- `.env`: Enviornment variables (e.g., `HF_API_TOKEN`,`EMBEDDING_MODEL`,`GENERATOR_MODEL`).
+``` bash
+IT-Ticket-RAG/
+│── data/                     # Sample datasets (Excel, CSV, JSON, New Tickets)
+│── src/                      # Source code modules
+│   ├── data_loader.py        # Loads and preprocesses old & new tickets
+│   ├── embedding_model.py     # Embedding model + similarity search
+│   ├── generation_model.py    # Hugging Face LLM inference
+│   ├── app.py                # Main Streamlit app
+│── .env                      # Environment variables (not committed)
+│── requirements.txt          # Python dependencies
+│── README.md                 # Project documentation
+
+```
