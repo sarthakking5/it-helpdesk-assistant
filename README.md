@@ -51,7 +51,7 @@ IT-Ticket-RAG/
 ## Setup Instructions
 ### 1. Clone the Repository
 ``` bash
-git clone https://github.com/yourusername/IT-Ticket-RAG.git
+git clone https://github.com/sarthakking5/IT-Ticket-RAG.git
 cd IT-Ticket-RAG
 ```
 ### 2. Create a Virtual Environment
